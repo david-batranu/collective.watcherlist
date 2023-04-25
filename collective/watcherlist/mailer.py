@@ -46,7 +46,6 @@ def simple_send_mail(message, addresses, subject, immediate=False):
         return
 
     mfrom = utils.get_mail_from_address()
-    header_charset = utils.get_charset()
 
     for address in addresses:
         if not address:
@@ -56,5 +55,4 @@ def simple_send_mail(message, addresses, subject, immediate=False):
             mto=address,
             mfrom=mfrom,
             subject=subject,
-            immediate=immediate,
-            charset=header_charset)
+            immediate=immediate)

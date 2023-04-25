@@ -71,7 +71,7 @@ class BaseMail(BrowserView):
         # We must choose the body charset manually.  Note that the
         # goal and effect of this loop is to determine the
         # body_charset.
-        for body_charset in 'US-ASCII', utils.get_charset(), 'UTF-8':
+        for body_charset in 'US-ASCII', 'UTF-8':
             try:
                 plain.encode(body_charset)
                 html.encode(body_charset)

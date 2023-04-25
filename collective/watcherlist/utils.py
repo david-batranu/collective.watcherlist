@@ -2,7 +2,6 @@ from AccessControl import Unauthorized
 from email.utils import formataddr
 from email.utils import parseaddr
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import getSiteEncoding
 from Products.CMFPlone.utils import safe_unicode
 from zope.component import getMultiAdapter
 from zope.component.hooks import getSite
@@ -19,39 +18,10 @@ except ImportError:
 DEFAULT_CHARSET = 'utf-8'
 
 
-def get_charset():
-    """Character set to use for encoding the email.
-
-    If encoding fails we will try some other encodings.  We hope
-    to get utf-8 here always actually.
-
-    The getSiteEncoding call also works when portal is None, falling
-    back to utf-8.  But that is only on Plone 4, not Plone 3.  So we
-    handle that ourselves.
-    """
-    charset = None
-    portal = getSite()
-    if portal is None:
-        return DEFAULT_CHARSET
-    if IMailSchema is None:
-        # Plone 4
-        charset = portal.getProperty('email_charset', '')
-    else:
-        # Plone 5.0 and higher
-        registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(
-            IMailSchema, prefix='plone', check=False)
-        charset = mail_settings.email_charset
-
-    if not charset:
-        charset = getSiteEncoding(portal)
-    return charset
-
-
 def su(value):
     """Return safe unicode version of value.
     """
-    return safe_unicode(value, encoding=get_charset())
+    return safe_unicode(value, encoding='utf-8')
 
 
 def get_mail_host():
